@@ -1,0 +1,85 @@
+{% extends "layout.html" %}
+{% block content %}        
+<div class="container">
+    <div class="row justify-content-md-center">
+        {% if num_prediction_files > 0 %}
+            <div class="col col-12 justify-content-md-center">    
+                <h3 style="text-align: center;" id='current_age_description'>{{ages[0]}} Years</h3>
+            </div>
+            <span style="display: inline-block">
+                <div id="cf7" class="col col-12 justify-content-md-center">
+                    
+                    <img class='opaque' src="{{ prediction_filepath[0] }}" />
+                    {%for i in range(1, num_prediction_files)%}
+                        <img src="{{ prediction_filepath[i] }}" />
+                    {%endfor%}
+                </div>
+                <div class="col col-12 control-btn">
+                    <div style="display: none;" id="prev_button" onclick="change_image('prev')" class="prev-button">
+                        <i class="fas fa-chevron-left  fa-2x"></i>
+                    </div>
+                    <div  id="next_button" onclick="change_image('next')" class="next-button">
+                        <i class="fas fa-chevron-right  fa-2x"></i>
+                    </div>
+                </div>
+                <button id='reset_button' onclick="window.location.href = '/age_predictor';" type="button" class="btn btn-primary btn-lg btn-block">Choose another image</button>
+            </span>
+        {% endif %}
+    </div>
+            
+</div>
+
+<script>
+$(".alert").delay(8000).slideUp(200, function() {
+    $(this).alert('close');
+});
+</script>
+
+
+<script>
+    var current_age_index = 0
+    var ages = ['10', '20', '30', '40', '50', '60', '70', '80', '90']
+    
+    function change_image(direction){
+        if (direction=='prev'){
+            document.getElementById("next_button").style.display = "block"
+            if (current_age_index > 0){
+                $("#cf7 img").removeClass("opaque");
+                current_age_index -= 1
+                $("#cf7 img").eq(current_age_index).addClass("opaque");
+                document.getElementById("current_age_description").innerHTML = ages[current_age_index] + ' Years'
+            }
+            if (current_age_index == 0){
+                document.getElementById("prev_button").style.display = "none"
+            }
+        }else{
+            document.getElementById("prev_button").style.display = "block"
+            if (current_age_index < 7){
+                $("#cf7 img").removeClass("opaque");
+                current_age_index += 1
+                $("#cf7 img").eq(current_age_index).addClass("opaque");
+                document.getElementById("current_age_description").innerHTML = ages[current_age_index] + ' Years'
+            }
+            if (current_age_index == 7){
+                document.getElementById("next_button").style.display = "none"
+            }
+        }
+    }
+    
+
+    $(document).ready(function() {
+        $.ajax({
+            type: "GET",
+            crossDomain: true,
+            url: "/age_predictor/remove_images"
+        })
+    });
+
+</script>
+<script>
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+</script>
+
+{% endblock content %}

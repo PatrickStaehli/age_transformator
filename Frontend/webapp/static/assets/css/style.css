@@ -1,0 +1,122 @@
+/*--------------------------------------------------------------
+# General
+--------------------------------------------------------------*/
+@font-face {
+    font-family: 'rage_italicregular';
+    src: url('fonts/rage_italic-webfont.woff2') format('woff2'),
+         url('fonts/rage_italic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+  color: #272829;
+}
+
+a {
+  color: #149ddd !important;
+}
+
+a:hover {
+  color: #37b3ed;
+  text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Raleway", sans-serif;
+}
+html {
+  scroll-behavior: smooth;
+}
+
+
+/*--------------------------------------------------------------
+# Images
+--------------------------------------------------------------*/
+
+.img_container{
+  padding-bottom: 50%;
+  overflow: hidden;
+}
+
+#cf7 {
+  text-align: center;
+  margin:0 auto 10px;
+  display: inline-block;
+}
+#cf7 img {
+  position: absolute;
+  -webkit-transition: opacity 0.5s ease-in-out;
+  -moz-transition: opacity 0.5s ease-in-out;
+  -o-transition: opacity 0.5s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
+  opacity:0;
+  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+  margin-left: auto;
+  margin-right: auto;
+  top:0;
+  left:0;
+  right:0;
+  height: 60vh;
+  object-fit: fill;
+}@media (max-width: 768px) {
+  #cf7 img {
+		width: 85vw;
+    height: 90vw;
+	}		
+}
+
+
+#cf7 img.opaque {
+  position: relative;
+  opacity:1;
+  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: alpha(opacity=1);
+}
+
+.img-center {
+  display: block;
+  margin: 0 auto;
+  max-width: 95%;
+  max-height: 70vh;
+  object-fit: fill;
+}
+.loading_spinner {
+  display: block;
+  margin: 0 auto;
+  width: 128px;
+  object-fit: fill;
+}
+
+.prev-button{
+  float:left;
+  cursor:pointer;
+}
+.next-button{
+  float:right;
+  cursor:pointer;
+}
+
+.control-btn{
+  margin-top: -55%;
+}
+
+#reset_button{
+  margin-top: 60%;
+  margin-bottom: 20px;
+}
+
+/*--------------------------------------------------------------
+# Navigation 
+--------------------------------------------------------------*/
+.navbar {
+  background-color: #252525;
+}
+.nav-item{
+  font-family: "Segoe UI",Arial,sans-serif !important;
+  font-weight: 400 !important;
+  color: #fff !important;
+}

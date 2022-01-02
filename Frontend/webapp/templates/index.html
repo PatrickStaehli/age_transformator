@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+{% block content %}
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<div class="row">
+    
+    <div class="col-12">
+        <div class="container">
+            <div class="row justify-content-md-center">
+                
+                <div class="col col-12">
+                    {% if image_upload == False %}
+                        <h3 id="title" class="border-bottom">Select an image</h3>
+                    {% else %}
+                        <h3 id="title" class="border-bottom">Selected image</h3>
+                    {% endif %} 
+                </div>
+                
+                
+                
+                <div class="col col-12">
+                    {% if image_upload == False %}
+                    
+                        <form id='predict_form' method="POST" action="" enctype="multipart/form-data">
+                            {{ form.hidden_tag() }}
+                            <fieldset class="form-group">
+                                <div class="form-group">
+                                    {{ form.picture.label() }}
+                                    {{ form.picture(class="form-control-file") }}
+                                    {% if form.picture.errors %}
+                                        {% for error in form.picture.errors %}
+                                            <span class="text-danger">{{ error }}</span></br>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </fieldset>
+                            <div class="form-group">
+                                {{ form.submit(class="btn btn-primary btn-lg btn-block") }}
+                            </div>
+                        </form>
+                        
+                    {% else %}
+                        <img id="original_image" class='img-center' src="{{ image_filepath }}" />
+                        <img id="loading_spinner" style="display: none;" class='loading_spinner' src="/age_predictor/static/assets/img/loading.gif" />
+                        <button style="margin-top: 20px;" id='prediction_button' onclick="start_prediction()" type="button" class="btn btn-success btn-lg btn-block">Start prediction....</button>
+                        <button style="margin-top: 20px; margin-bottom: 20px;" id='choose_new_image_button' onclick="window.location.href = '/age_predictor';" type="button" class="btn btn-primary btn-lg btn-block">Choose another image</button>
+                        
+                        <div style="display: none; margin-bottom: 20px;" id='prediction_loadbar' class="w3-light-grey w3-round-large">
+                            <div id="myBar" class="w3-container w3-blue w3-round-large" style="width:0%">0%</div>
+                        </div>
+                    {% endif %} 
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+
+
+
+<script>
+    var loadbar_width = 1;
+
+    function move() {
+        var elem = document.getElementById("myBar");
+        var id = setInterval(frame, 600);
+        function frame() {
+            if (loadbar_width >= 100) {
+                clearInterval(id);
+            } 
+            else {
+                loadbar_width++;
+                elem.style.width = loadbar_width + '%';
+                elem.innerHTML =  loadbar_width + '%'
+            }
+        }
+    }
+
+    function start_prediction(){
+        if (document.getElementById("prediction_loadbar").style.display == "none") {
+            move()
+            document.getElementById("prediction_button").style.display = "none"
+            document.getElementById("choose_new_image_button").style.display = "none"
+            document.getElementById("original_image").style.display = "none"
+            document.getElementById("prediction_loadbar").style.display = "block"
+            document.getElementById("loading_spinner").style.display = "block"
+            document.getElementById("title").innerHTML = 'Prediction in progress...'
+        }
+        $.ajax({
+            type: "GET",
+            crossDomain: true,
+            url: "/age_predictor/predict"
+        }).done(function (data) {
+            if (data.prediction_status == true) {
+                window.location.href = "/age_predictor/results";
+            }else{
+                window.location.href = "/age_predictor";
+            }
+
+        });
+    } 
+</script>
+
+<script>
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+</script>
+{% endblock content %}

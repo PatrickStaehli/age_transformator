@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Age Prediction</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- FA icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  
+  <!-- Vendor CSS Files -->
+  <link href="/age_predictor/static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Template Main CSS File -->
+  <link href="/age_predictor/static/assets/css/style.css" rel="stylesheet">
+  <link href="/age_predictor/static/assets/css/footer.css" rel="stylesheet">
+
+  <!-- Vendor JS Files -->
+  <script src="/age_predictor/static/assets/vendor/jquery/jquery.min.js"></script>
+  <script src="/age_predictor/static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/age_predictor/static/assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+
+</head>
+
+<body>
+  <!-- ======= Header ======= -->
+  <div class="flex-wrapper">
+    <header id="header">
+      <div class="d-flex flex-column">
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+          <div class="container">
+            
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarToggle">
+              <div class="navbar-nav mr-auto">
+                <a class="nav-item nav-link" href="{{ url_for('home') }}">Home</a>
+              </div>
+              <!-- Navbar Right Side -->
+              <div class="navbar-nav">
+              </div>
+            </div>
+          </div>
+        </nav>
+        <button type="button" class="mobile-nav-toggle d-xl-none"><i class="icofont-navigation-menu"></i></button>
+
+      </div>
+    </header> <!-- End Header -->
+
+    <!-- ======= Main ======= -->
+    <main role="main" class="container">
+      <div class="row" style="padding-top: 70px">
+          <div class="col-12">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                  {% for category, message in messages %}
+                      <div class="alert alert-{{ category }}">
+                          {{ message }}
+                      </div>
+                  {% endfor %}
+              {% endif %}
+          {% endwith %}
+          </div>
+          <div class="col-12">
+              {% block content %}{% endblock %}
+          </div>
+      </div>
+    </main> <!-- End Main -->
+
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer" class="footer-1">
+      <div class="main-footer widgets-dark typo-light">
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-12">
+                <div class="widget subscribe no-box">
+                <h5 class="widget-title">About<span></span></h5>
+                <p>This is an implementation of the paper <a href="https://arxiv.org/abs/2102.02754">Only a Matter of Style: Age Transformation Using a Style-Based Regression Model</a>
+                  by Y. Alauf et al. The model inference is performed via a serverless implementation on AWS Lambda. Note that the images are stored only temporarily for processing and deleted after displaying to you.
+                  The source code is available on <a href="https://arxiv.org/abs/2102.02754">Github</a>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+          
+      <div class="footer-copyright">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12 text-center">
+            <p>Date of implementation: December 2021</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer> <!-- End Footer -->
+  </div>
+
+  
+
+  <script>
+    $(".alert").delay(8000).slideUp(200, function() {
+        $(this).alert('close');
+    });
+  </script>
+
+  <script>
+    if ( window.history.replaceState ) {
+      window.history.replaceState( null, null, window.location.href );
+    }
+  </script>
+  </body>
+ </html>
