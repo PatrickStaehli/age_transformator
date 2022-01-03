@@ -1,3 +1,6 @@
+# uWSGI files
+*.sock
+
 # python virtual environment
 venv
 # Byte-compiled / optimized / DLL files
