@@ -22,7 +22,7 @@
                         <i class="fas fa-chevron-right  fa-2x"></i>
                     </div>
                 </div>
-                <button id='reset_button' onclick="window.location.href = '/age_predictor';" type="button" class="btn btn-primary btn-lg btn-block">Choose another image</button>
+                <button id='reset_button' onclick="window.location.href = '/age_transformator';" type="button" class="btn btn-primary btn-lg btn-block">Choose another image</button>
             </span>
         {% endif %}
     </div>
@@ -71,7 +71,7 @@ $(".alert").delay(8000).slideUp(200, function() {
         $.ajax({
             type: "GET",
             crossDomain: true,
-            url: "/age_predictor/remove_images"
+            url: "/age_transformator/remove_images"
         })
     });
 

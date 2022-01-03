@@ -7,17 +7,17 @@ logging.basicConfig(filename='logs.log', level=logging.DEBUG)
 
 from forms import UploadImageFomr
 from utils import save_picture, delete_images
-from job_handler import age_predictor
+from job_handler import age_transformator
 
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.config['SECRET_KEY'] = '0Af4ee3597Ias5//asft21A'
 
 
-predictor = age_predictor()
+predictor = age_transformator()
 
 
-@app.route("/age_predictor", methods=['GET', 'POST'])
+@app.route("/age_transformator", methods=['GET', 'POST'])
 def home():
     
     sessionID = 'j6uzp_fiKk1L0g'
@@ -31,7 +31,7 @@ def home():
             if original_image_path:
                 session['original_image_path'] = original_image_path
                 return render_template('index.html', title='Account',
-                                    image_upload=True, image_filepath = 'age_predictor/' + original_image_path, 
+                                    image_upload=True, image_filepath = 'age_transformator/' + original_image_path, 
                                     form=form)
             else:
                 flash('Could not upload image', 'warning')
@@ -41,13 +41,13 @@ def home():
                            image_upload=False, form=form)
 
 
-@app.route("/age_predictor/results", methods=['GET', 'POST'])
+@app.route("/age_transformator/results", methods=['GET', 'POST'])
 def results():
   
     # Count files in prediction
     list_prediction_files = os.listdir('static/predicted_image/') # dir is your directory path
     list_prediction_files.sort()
-    prediction_filepath = ['/age_predictor/static/predicted_image/' + filename for filename in list_prediction_files]
+    prediction_filepath = ['/age_transformator/static/predicted_image/' + filename for filename in list_prediction_files]
     #prediction_filepath = ['/static/predicted_image/' + filename for filename in list_prediction_files] # Local Debugging
     number_files = len(prediction_filepath)
  
@@ -59,7 +59,7 @@ def results():
                         ages = ages)
 
 
-@app.route("/age_predictor/predict", methods=['GET', 'POST'])
+@app.route("/age_transformator/predict", methods=['GET', 'POST'])
 def predict_age():
    
     status = predictor.predict(session['original_image_path'])
@@ -72,7 +72,7 @@ def predict_age():
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
     
-@app.route("/age_predictor/remove_images", methods=['GET', 'POST'])
+@app.route("/age_transformator/remove_images", methods=['GET', 'POST'])
 def remove_images():
     
     # Wait 5 seconds to be sure that the images are loaded.

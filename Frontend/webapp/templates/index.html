@@ -40,9 +40,9 @@
                         
                     {% else %}
                         <img id="original_image" class='img-center' src="{{ image_filepath }}" />
-                        <img id="loading_spinner" style="display: none;" class='loading_spinner' src="/age_predictor/static/assets/img/loading.gif" />
+                        <img id="loading_spinner" style="display: none;" class='loading_spinner' src="/age_transformator/static/assets/img/loading.gif" />
                         <button style="margin-top: 20px;" id='prediction_button' onclick="start_prediction()" type="button" class="btn btn-success btn-lg btn-block">Start prediction....</button>
-                        <button style="margin-top: 20px; margin-bottom: 20px;" id='choose_new_image_button' onclick="window.location.href = '/age_predictor';" type="button" class="btn btn-primary btn-lg btn-block">Choose another image</button>
+                        <button style="margin-top: 20px; margin-bottom: 20px;" id='choose_new_image_button' onclick="window.location.href = '/age_transformator';" type="button" class="btn btn-primary btn-lg btn-block">Choose another image</button>
                         
                         <div style="display: none; margin-bottom: 20px;" id='prediction_loadbar' class="w3-light-grey w3-round-large">
                             <div id="myBar" class="w3-container w3-blue w3-round-large" style="width:0%">0%</div>
@@ -89,12 +89,12 @@
         $.ajax({
             type: "GET",
             crossDomain: true,
-            url: "/age_predictor/predict"
+            url: "/age_transformator/predict"
         }).done(function (data) {
             if (data.prediction_status == true) {
-                window.location.href = "/age_predictor/results";
+                window.location.href = "/age_transformator/results";
             }else{
-                window.location.href = "/age_predictor";
+                window.location.href = "/age_transformator";
             }
 
         });

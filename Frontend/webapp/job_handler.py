@@ -8,7 +8,7 @@ from PIL import Image
 import time
 
 
-class age_predictor:
+class age_transformator:
     '''
     Attributes
     ----------
