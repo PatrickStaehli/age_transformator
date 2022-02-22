@@ -16,21 +16,16 @@ from utils.common import tensor2im
 from models.psp import pSp
 
 
-def predict_age(img, target_age):
+def load_model():
 	'''
-	Transforms the input image to the target age
+	Loads the pre-trained age_transformation torch model
 
-	Args
-    ----
-        img (cv2) : Profile image
-		target_age (list of int) : Target ages 
+	Returns
+	-------
+		torch_model : The pre-trained torch model for the age_transformation
 
-    Returns
-    -------
-        list
-			List of predicted images for the target age
 	'''
-	
+
 
 	# Options
 	options = {'checkpoint_path':'pretrained_models/sam_ffhq_aging.pt',
@@ -49,7 +44,26 @@ def predict_age(img, target_age):
 	net = pSp(opts)
 	net.to('cpu')
 	net.eval()
+
+	return net
+
+def predict_age(img, target_age):
+	'''
+	Transforms the input image to the target age
+
+	Args
+    ----
+        img (cv2) : Profile image
+		target_age (list of int) : Target ages 
+
+    Returns
+    -------
+        list
+			List of predicted images for the target age
+	'''
 	
+	# Load the pre-trained model
+	net = load_model()
 
 	# Create AgeTransformer
 	age_transformers = [AgeTransformer(target_age=age) for age in target_age]
