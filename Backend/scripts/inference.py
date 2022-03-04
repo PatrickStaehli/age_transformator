@@ -4,6 +4,9 @@ import time
 import sys
 os.environ['CUDA_VISIBLE_DEVICES'] = ''
 
+
+
+import logging
 import numpy as np
 from PIL import Image
 
@@ -19,11 +22,11 @@ from models.psp import pSp
 def load_model():
 	'''
 	Loads the pre-trained age_transformation torch model
-
+		
 	Returns
 	-------
 		torch_model : The pre-trained torch model for the age_transformation
-
+		otps : Options of the loaded model
 	'''
 
 
@@ -45,7 +48,7 @@ def load_model():
 	net.to('cpu')
 	net.eval()
 
-	return net
+	return net, opts
 
 def predict_age(img, target_age):
 	'''
@@ -63,7 +66,7 @@ def predict_age(img, target_age):
 	'''
 	
 	# Load the pre-trained model
-	net = load_model()
+	net, opts = load_model()
 
 	# Create AgeTransformer
 	age_transformers = [AgeTransformer(target_age=age) for age in target_age]
@@ -79,7 +82,7 @@ def predict_age(img, target_age):
 	generated_images = []
 	for age_transformer in age_transformers:
 
-		print(f"Running on target age: {age_transformer.target_age}")
+		logging.debug(f"Running on target age: {age_transformer.target_age}")
 		
 		with torch.no_grad():
 			input_age_batch = [age_transformer(normalized_image.cpu())]
