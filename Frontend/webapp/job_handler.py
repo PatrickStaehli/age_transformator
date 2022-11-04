@@ -126,16 +126,29 @@ class age_transformator:
                 request_object = {'age': ag,
                                   'image': encoded_image}
                 
-                start = time.time()
-                response = requests.post(self.aws_lambda_url, 
-                                         data=json.dumps(request_object), 
-                                         headers={'Content-type': 'application/json'}, 
-                                         timeout=120
-                                         ).json()
-                print(f'Time elapsed: {time.time()-start}')
+                # The first prediction attempt might fail becuase the lambda function might run from a cold start
+                # and the max. api response time (from the aws side) is 29 seconds.
+                attempts = 0
+                while attempts < 2:
+                    try:
+                        start = time.time()
+                        response = requests.post(self.aws_lambda_url, 
+                                                 data=json.dumps(request_object), 
+                                                 headers={'Content-type': 'application/json'}, 
+                                                 timeout=120
+                                                 ).json()
 
-                # The images base64 encoded in the image object of the response json
-                response_images = response['image']
+                        # The images base64 encoded in the image object of the response json
+                        response_images = response['image']
+                        print(f'Time elapsed: {time.time()-start}')
+                        break
+                        
+                    except:
+                            attempts += 1
+                            print(f'Prediction failed after {time.time()-start} seconds')
+                            response_images = None
+                            time.sleep(2)
+                        
                 for age, aged_image in response_images.items():
                     print(age)
                     cv2.imwrite('static/predicted_image/' + age + '.jpg', self.base64_to_img(aged_image))
